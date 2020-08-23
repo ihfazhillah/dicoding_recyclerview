@@ -21,6 +21,12 @@ public class ListHeroAdapter extends RecyclerView.Adapter<ListHeroAdapter.ListVi
         this.heroesList = list;
     }
 
+    private OnItemClickCallback onItemClickCallback;
+
+    public void setOnItemClickCallback(OnItemClickCallback onItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback;
+    }
+
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -29,7 +35,7 @@ public class ListHeroAdapter extends RecyclerView.Adapter<ListHeroAdapter.ListVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ListViewHolder holder, int position) {
         Hero hero = heroesList.get(position);
         Glide.with(holder.itemView.getContext())
                 .load(hero.getPhoto())
@@ -38,7 +44,20 @@ public class ListHeroAdapter extends RecyclerView.Adapter<ListHeroAdapter.ListVi
         holder.tvName.setText(hero.getName());
         holder.tvDetail.setText(hero.getDetail());
 
+        holder.itemView.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                onItemClickCallback.onItemClicked(heroesList.get(holder.getAdapterPosition()));
+            }
+        });
+
+
     }
+
+    public interface  OnItemClickCallback{
+        void onItemClicked(Hero data);
+    }
+
 
     @Override
     public int getItemCount() {

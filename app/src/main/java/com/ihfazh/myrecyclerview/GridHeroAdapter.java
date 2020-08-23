@@ -14,7 +14,13 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
 public class GridHeroAdapter extends RecyclerView.Adapter<GridHeroAdapter.GridViewHolder> {
+
+    public interface OnItemClickCallback{
+        void onItemClicked(Hero data);
+    }
+
     private ArrayList<Hero> heroesList;
+    private OnItemClickCallback onItemClickCallback;
 
     public GridHeroAdapter(ArrayList<Hero> list){
         this.heroesList = list;
@@ -28,11 +34,25 @@ public class GridHeroAdapter extends RecyclerView.Adapter<GridHeroAdapter.GridVi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull GridViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final GridViewHolder holder, int position) {
         Glide.with(holder.itemView.getContext())
                 .load(heroesList.get(position).getPhoto())
                 .apply(new RequestOptions().override(350, 550))
                 .into(holder.img);
+        holder.itemView.setOnClickListener(
+                new View.OnClickListener(){
+                    @Override
+                    public void onClick(View view) {
+                        onItemClickCallback.onItemClicked(
+                                heroesList.get(holder.getAdapterPosition())
+                        );
+                    }
+                }
+        );
+    }
+
+    public void setOnItemClickCallback(OnItemClickCallback callback){
+        onItemClickCallback = callback;
     }
 
     @Override
