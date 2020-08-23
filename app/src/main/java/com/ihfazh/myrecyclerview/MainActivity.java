@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView rv;
     private ArrayList<Hero> list = new ArrayList<>();
+    private String title = "List view";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,15 @@ public class MainActivity extends AppCompatActivity {
         list.addAll(HeroesData.getHeroesData());
         showRecyclerList();
 
+        setActionBarTitle(title);
+
+
+    }
+
+    private void setActionBarTitle(String title){
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setTitle(title);
+        }
 
     }
 
@@ -40,6 +50,12 @@ public class MainActivity extends AppCompatActivity {
         rv.setLayoutManager(new LinearLayoutManager(this));
         GridHeroAdapter gridHeroAdapter = new GridHeroAdapter(list);
         rv.setAdapter(gridHeroAdapter);
+    }
+
+    private void showRecyclerCard(){
+        rv.setLayoutManager(new LinearLayoutManager(this));
+        CardViewAdapter cardViewAdapter = new CardViewAdapter(list);
+        rv.setAdapter(cardViewAdapter);
     }
 
     @Override
@@ -57,13 +73,19 @@ public class MainActivity extends AppCompatActivity {
     private void setMode(int itemId) {
         switch (itemId){
             case R.id.action_card:
+                title = "Card View";
+                showRecyclerCard();
                 break;
             case R.id.action_list:
+                title = "List View";
                 showRecyclerList();
                 break;
             case R.id.action_grid:
+                title = "Grid View";
                 showRecyclerGrid();
                 break;
         }
+
+        setActionBarTitle(title);
     }
 }

@@ -7,4 +7,5 @@
     <string name="list">List</string>
     <string name="fav">Favorite</string>
     <string name="share">Share</string>
+    <string name="add_to_favorite">Favorite</string>
 </resources>
